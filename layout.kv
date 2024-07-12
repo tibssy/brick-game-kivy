@@ -1,10 +1,94 @@
+<ImageButton@ButtonBehavior+Image>
+    allow_stretch: True
+    color: 0,0,0,1
+
 <MyLayout>:
     orientation: 'vertical'
 
     canvas.before:
         Color:
-            rgba: 0,0.3,0,1
+            rgba: app.secondary_color
         Rectangle:
             size: self.size
             pos: self.pos
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 40
+        padding: 8, 5
+
+        canvas.before:
+            Color:
+                rgba: 0.3,0.3,0.3,1
+            BoxShadow:
+                pos: self.pos
+                size: self.size
+                offset: 0, 0
+                spread_radius: 4, 4
+                blur_radius: 8
+            Color:
+                rgba: app.primary_color
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: 'Brick Game'
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            color: 0,0,0,1
+            font_size: self.height
+            font_name: 'assets/fonts/Roboto-Bold.ttf'
+
+
+
+
+        ImageButton:
+            source: 'assets/images/user.png'
+            keep_ratio: True
+            size_hint_x: None
+            width: self.height
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        AnchorLayout:
+            anchor_x: 'center'
+            GridLayout:
+                cols: 10
+                size_hint: None, 1
+                width: self.height * 0.5
+                canvas.before:
+                    Color:
+                        rgba: 0.4,0.4,0.4,1
+                    BoxShadow:
+                        pos: self.pos
+                        size: self.size
+                        offset: 0, 0
+                        spread_radius: 6, 6
+                        border_radius: 10, 10, 10, 10
+                        blur_radius: 6
+                        inset: True
+
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: 200
+            spacing: 10
+
+            Button:
+            Button:
+            Button:
+            Button:
+            Button:
+            Button:
+
+
+
+
+
 

@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.utils import platform
+from kivy.utils import get_color_from_hex
 
 
 Builder.load_file('layout.kv')
@@ -16,6 +17,12 @@ class MyLayout(BoxLayout):
 
 
 class BrickGameApp(App):
+    primary_color = get_color_from_hex('#b9f46c')
+    secondary_color = get_color_from_hex('#dce7c7')
+    secondary_background = get_color_from_hex('#c5c8ba')
+    accent_color = get_color_from_hex('#E65100')
+
+
     def build(self):
         return MyLayout()
 
