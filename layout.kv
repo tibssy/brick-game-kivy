@@ -1,6 +1,32 @@
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+
+
 <ImageButton@ButtonBehavior+Image>
     allow_stretch: True
     color: 0,0,0,1
+
+<CustomButton@Button>
+    font_size: self.height * 0.6
+    bold: True
+    color: 0,0,0,1
+    background_color: 0,0,0,0
+    canvas.before:
+        Color:
+            rgba: 0.3,0.3,0.3,1
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            offset: 0, -2
+            spread_radius: 2, 2
+            border_radius: 10, 10, 10, 10
+            blur_radius: 6
+        Color:
+            rgba: app.secondary_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+
 
 <MyLayout>:
     orientation: 'vertical'
@@ -42,51 +68,80 @@
             font_size: self.height
             font_name: 'assets/fonts/Roboto-Bold.ttf'
 
-
-
-
         ImageButton:
             source: 'assets/images/user.png'
             keep_ratio: True
             size_hint_x: None
             width: self.height
 
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 10
-        spacing: 10
+    ScreenManager:
+        id: screen_manager
+        transition: CardTransition()
 
-        AnchorLayout:
-            anchor_x: 'center'
-            GridLayout:
-                cols: 10
-                size_hint: None, 1
-                width: self.height * 0.5
+        Screen:
+            name: 'settings'
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10
                 canvas.before:
                     Color:
-                        rgba: 0.4,0.4,0.4,1
-                    BoxShadow:
-                        pos: self.pos
+                        rgba: app.primary_color
+                    Rectangle:
                         size: self.size
-                        offset: 0, 0
-                        spread_radius: 6, 6
-                        border_radius: 10, 10, 10, 10
-                        blur_radius: 6
-                        inset: True
+                        pos: self.pos
 
-        GridLayout:
-            cols: 3
-            size_hint_y: None
-            height: 200
-            spacing: 10
+                Label:
+                    text: 'setting area'
+                    color: 0,0,0,1
 
-            Button:
-            Button:
-            Button:
-            Button:
-            Button:
-            Button:
+                CustomButton:
+                    size_hint_y: None
+                    height: 40
+                    text: 'Start Game'
+                    on_release:
+                        screen_manager.transition.direction = 'up'
+                        screen_manager.transition.mode = 'pop'
+                        screen_manager.current = 'game'
 
+        Screen:
+            name: 'game'
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10, 20
+                spacing: 20
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    GridLayout:
+                        id: game_grid
+                        cols: 10
+                        size_hint: None, 1
+                        width: self.height * 0.5
+                        canvas.before:
+                            Color:
+                                rgba: 0.4,0.4,0.4,1
+                            BoxShadow:
+                                pos: self.pos
+                                size: self.size
+                                offset: 0, 0
+                                spread_radius: 6, 6
+                                border_radius: 10, 10, 10, 10
+                                blur_radius: 6
+                                inset: True
+
+                GridLayout:
+                    cols: 3
+                    size_hint_y: None
+                    height: 200
+                    spacing: 40
+
+                    CustomButton:
+                    CustomButton:
+                    CustomButton:
+                    CustomButton:
+                    CustomButton:
+                    CustomButton:
 
 
 

@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.utils import platform
 from kivy.utils import get_color_from_hex
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 
 Builder.load_file('layout.kv')
