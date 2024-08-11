@@ -1,31 +1,63 @@
 #:import CardTransition kivy.uix.screenmanager.CardTransition
 
 
+<Block@Widget>
+    visible: False
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 0.5) if self.visible else (0, 0, 0, 0)
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            offset: 0, -2
+            spread_radius: 3, 3
+            border_radius: [sp(6)] * 4
+            blur_radius: sp(6)
+        Color:
+            rgba: app.secondary_accent if self.visible else (0, 0, 0, 0)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [6]
+        Color:
+            rgba: app.primary_accent if self.visible else (0, 0, 0, 0)
+        RoundedRectangle:
+            size: self.size[0] * 0.9, self.size[1] * 0.9
+            pos: self.pos[0] + self.size[0] * 0.05, self.pos[1] + self.size[1] * 0.05
+            radius: [4]
+
+
+
+
 <ImageButton@ButtonBehavior+Image>
     allow_stretch: True
     color: 0,0,0,1
 
-<CustomButton@Button>
-    font_size: self.height * 0.6
-    bold: True
-    color: 0,0,0,1
+<CustomButton@ButtonBehavior+Image>
+    color: app.secondary_accent
     background_color: 0,0,0,0
     canvas.before:
         Color:
-            rgba: 0.3,0.3,0.3,1
+            rgba: 0.1, 0.1, 0.1, 0.5
         BoxShadow:
             pos: self.pos
             size: self.size
             offset: 0, -2
             spread_radius: 2, 2
-            border_radius: 10, 10, 10, 10
-            blur_radius: 6
+            border_radius: [sp(12)] * 4
+            blur_radius: sp(12) if self.state == 'normal' else sp(3)
         Color:
-            rgba: app.secondary_color
+            rgba: app.secondary_accent
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [10]
+            radius: [sp(12)]
+        Color:
+            rgba: app.primary_background
+        RoundedRectangle:
+            size: [i - sp(6) for i in self.size]
+            pos: [i + sp(3) for i in self.pos]
+            radius: [sp(12)]
 
 
 <MyLayout>:
@@ -33,115 +65,151 @@
 
     canvas.before:
         Color:
-            rgba: app.secondary_color
+            rgba: app.primary_background
         Rectangle:
             size: self.size
             pos: self.pos
 
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: None
-        height: 40
-        padding: 8, 5
 
-        canvas.before:
-            Color:
-                rgba: 0.3,0.3,0.3,1
-            BoxShadow:
-                pos: self.pos
-                size: self.size
-                offset: 0, 0
-                spread_radius: 4, 4
-                blur_radius: 8
-            Color:
-                rgba: app.primary_color
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        Label:
-            text: 'Brick Game'
-            text_size: self.size
-            halign: 'left'
-            valign: 'middle'
-            color: 0,0,0,1
-            font_size: self.height
-            font_name: 'assets/fonts/Roboto-Bold.ttf'
-
-        ImageButton:
-            source: 'assets/images/user.png'
-            keep_ratio: True
-            size_hint_x: None
-            width: self.height
 
     ScreenManager:
         id: screen_manager
         transition: CardTransition()
 
-        Screen:
-            name: 'settings'
-            BoxLayout:
-                orientation: 'vertical'
-                padding: 10
-                canvas.before:
-                    Color:
-                        rgba: app.primary_color
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-
-                Label:
-                    text: 'setting area'
-                    color: 0,0,0,1
-
-                CustomButton:
-                    size_hint_y: None
-                    height: 40
-                    text: 'Start Game'
-                    on_release:
-                        screen_manager.transition.direction = 'up'
-                        screen_manager.transition.mode = 'pop'
-                        screen_manager.current = 'game'
+#        Screen:
+#            name: 'settings'
+#            BoxLayout:
+#                orientation: 'vertical'
+#                padding: 10
+#                canvas.before:
+#                    Color:
+#                        rgba: app.primary_color
+#                    Rectangle:
+#                        size: self.size
+#                        pos: self.pos
+#
+#                Label:
+#                    text: 'setting area'
+#                    color: 0,0,0,1
+#
+#                CustomButton:
+#                    size_hint_y: None
+#                    height: 40
+#                    text: 'Start Game'
+#                    on_release:
+#                        screen_manager.transition.direction = 'up'
+#                        screen_manager.transition.mode = 'pop'
+#                        screen_manager.current = 'game'
+##                        app.start_game()
+##                        app.create_brick()
 
         Screen:
             name: 'game'
 
             BoxLayout:
                 orientation: 'vertical'
-                padding: 10, 20
-                spacing: 20
+                padding: 0, 0, 0, sp(16)
+                spacing: sp(16)
+#                canvas.before:
+#                    Color:
+#                        rgba: 0.5,0.5,1,1
+#                    Rectangle:
+#                        size: self.size
+#                        pos: self.pos
+
+                BoxLayout:
+                    id: score_area
+                    size_hint_y: 0.05
+                    canvas.before:
+                        Color:
+                            rgba: 0.1, 0.1, 0.1, 0.5
+                        BoxShadow:
+                            pos: self.pos
+                            size: self.size
+                            offset: 0, -2
+                            spread_radius: 3, 3
+                            border_radius: 6, 6, 6, 6
+                            blur_radius: 6
+                        Color:
+                            rgba: app.secondary_background
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
 
                 AnchorLayout:
                     anchor_x: 'center'
-                    GridLayout:
-                        id: game_grid
-                        cols: 10
+                    size_hint_y: 0.8
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: 10, 20
                         size_hint: None, 1
                         width: self.height * 0.5
+                        padding: sp(12)
                         canvas.before:
                             Color:
-                                rgba: 0.4,0.4,0.4,1
-                            BoxShadow:
-                                pos: self.pos
+                                rgba: app.secondary_accent
+                            RoundedRectangle:
                                 size: self.size
+                                pos: self.pos
+                                radius: [10]
+                            Color:
+                                rgba: app.secondary_background
+                            RoundedRectangle:
+                                size: [i - sp(8) for i in self.size]
+                                pos: [i + sp(4) for i in self.pos]
+                                radius: [sp(8)]
+
+                            Color:
+                                rgba: 0.1,0.1,0.1,0.8
+                            BoxShadow:
+                                size: [i - sp(8) for i in self.size]
+                                pos: [i + sp(4) for i in self.pos]
                                 offset: 0, 0
                                 spread_radius: 6, 6
-                                border_radius: 10, 10, 10, 10
-                                blur_radius: 6
+                                border_radius: [sp(12)] * 4
+                                blur_radius: sp(12)
                                 inset: True
 
-                GridLayout:
-                    cols: 3
-                    size_hint_y: None
-                    height: 200
-                    spacing: 40
 
-                    CustomButton:
-                    CustomButton:
-                    CustomButton:
-                    CustomButton:
-                    CustomButton:
-                    CustomButton:
+                        RelativeLayout:
+                            id: game_grid
+
+
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    size_hint_y: 0.2
+                    GridLayout:
+                        cols: 3
+                        size_hint_x: None
+                        width: self.height * 2
+                        spacing: sp(24)
+
+
+                        AnchorLayout:
+                            size_hint_x: 0.25
+                            anchor_y: 'center'
+                            CustomButton:
+                                size_hint_y: 0.8
+                                source: 'assets/images/arrow_left.png'
+                                on_release: app.control_brick('arrow_left')
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint_x: 0.5
+                            spacing: 30
+                            CustomButton:
+                                source: 'assets/images/arrow_up.png'
+                                on_release: app.control_brick('arrow_up')
+                            CustomButton:
+                                source: 'assets/images/arrow_down.png'
+                                on_release: app.control_brick('arrow_down')
+                        AnchorLayout:
+                            size_hint_x: 0.25
+                            anchor_y: 'center'
+                            CustomButton:
+                                size_hint_y: 0.8
+                                source: 'assets/images/arrow_right.png'
+                                on_release: app.control_brick('arrow_right')
 
 
 
