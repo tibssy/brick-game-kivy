@@ -2,6 +2,7 @@ from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
 from kivy.factory import Factory
 from kivy.animation import Animation
+from kivy.metrics import sp
 import numpy as np
 
 
@@ -64,11 +65,10 @@ class Brick(GridLayout):
         self.grid_size = grid_size
         self.brick_size_y, self.brick_size_x = self.brick.shape
         self.cols = self.brick_size_x
-        self.spacing = 15 - grid_size[0]
+        self.spacing = sp(6)
         self.position = self.calculate_initial_position()
         self.size_hint = self.calculate_size_hint()
         self.pos_hint = self.calculate_pos_hint()
-
         self.build_brick()
 
     def calculate_initial_position(self):
